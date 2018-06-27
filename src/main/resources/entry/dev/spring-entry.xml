@@ -14,7 +14,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<import resource="../../spring.xml" />
 
 </beans>

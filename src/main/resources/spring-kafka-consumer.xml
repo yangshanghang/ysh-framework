@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+    使用说明：
+    1、POM文件添加依赖
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>2.1.4.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+    2、实现消费类
+    import org.apache.kafka.clients.consumer.ConsumerRecord;
+    import org.springframework.kafka.listener.MessageListener;
+
+    public class KafkaConsumerExampleMessageListener implements MessageListener<String, String> {
+        @Override
+        public void onMessage(ConsumerRecord<String, String> data) {
+            System.out.println("get message :" + data.value());
+        }
+    }
+    3、基于@KafkaListener接收消息
+    @KafkaListener(topics={"topic2"})
+    public void listen(ConsumerRecord data) {
+        System.out.println("get message :" + data.value());
+    }
+     -->
+    <!-- 定义consumer的参数 -->
+    <bean id="consumerProperties" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
+                <entry key="group.id" value="${kafka.consumer.group.id}"/>
+                <entry key="enable.auto.commit" value="${kafka.consumer.enable.auto.commit}"/>
+                <entry key="auto.commit.interval.ms" value="${kafka.consumer.auto.commit.interval.ms}"/>
+                <entry key="session.timeout.ms" value="${kafka.consumer.session.timeout.ms}"/>
+                <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="value.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="max.poll.records" value="${kafka.consumer.max.poll.records}"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="consumerFactory" class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
+        <constructor-arg>
+            <ref bean="consumerProperties"/>
+        </constructor-arg>
+    </bean>
+
+    <!-- 消息消费者 -->
+    <bean id="messageListener" class="com.ysh.framework.kafka.MessageConsumer"/>
+
+    <!-- 消息消费者容器配置信息 -->
+    <bean id="messageContainerProperties" class="org.springframework.kafka.listener.config.ContainerProperties">
+        <constructor-arg value="ysh-topic"/>
+        <property name="messageListener" ref="messageListener"/>
+    </bean>
+
+    <!-- 消息监听容器 -->
+    <bean id="messageListenerContainer" class="org.springframework.kafka.listener.KafkaMessageListenerContainer"
+          init-method="doStart">
+        <constructor-arg ref="consumerFactory"/>
+        <constructor-arg ref="messageContainerProperties"/>
+    </bean>
+</beans>
