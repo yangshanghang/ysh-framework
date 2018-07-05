@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ysh.framework.scene.mapper.SceneMapper" >
+  <resultMap id="BaseResultMap" type="com.ysh.framework.scene.model.Scene" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CS_TERMINAL" property="terminal" jdbcType="CHAR" />
+    <result column="CS_MODULE" property="module" jdbcType="CHAR" />
+    <result column="CS_HEIGHT" property="height" jdbcType="INTEGER" />
+    <result column="CS_WIDTH" property="width" jdbcType="INTEGER" />
+    <result column="CS_IDENTIFICATION" property="identification" jdbcType="VARCHAR" />
+    <result column="CS_NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CS_STATUS" property="status" jdbcType="CHAR" />
+    <result column="CS_CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CS_CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="CS_OPERATE_TIME" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="CS_OPERATOR" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from CMS_SCENE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ysh.framework.scene.model.Scene" >
+    insert into CMS_SCENE (ID, CS_TERMINAL, CS_MODULE, 
+      CS_HEIGHT, CS_WIDTH, CS_IDENTIFICATION, 
+      CS_NAME, CS_STATUS, CS_CREATE_TIME, 
+      CS_CREATOR, CS_OPERATE_TIME, CS_OPERATOR
+      )
+    values (replace(uuid(), '-', ''), #{terminal,jdbcType=CHAR}, #{module,jdbcType=CHAR},
+      #{height,jdbcType=INTEGER}, #{width,jdbcType=INTEGER}, #{identification,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.ysh.framework.scene.model.Scene" >
+    update CMS_SCENE
+    set CS_TERMINAL = #{terminal,jdbcType=CHAR},
+      CS_MODULE = #{module,jdbcType=CHAR},
+      CS_HEIGHT = #{height,jdbcType=INTEGER},
+      CS_WIDTH = #{width,jdbcType=INTEGER},
+      CS_IDENTIFICATION = #{identification,jdbcType=VARCHAR},
+      CS_NAME = #{name,jdbcType=VARCHAR},
+      CS_STATUS = #{status,jdbcType=CHAR},
+      CS_CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CS_CREATOR = #{creator,jdbcType=VARCHAR},
+      CS_OPERATE_TIME = #{operateTime,jdbcType=TIMESTAMP},
+      CS_OPERATOR = #{operator,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ID, CS_TERMINAL, CS_MODULE, CS_HEIGHT, CS_WIDTH, CS_IDENTIFICATION, CS_NAME, 
+    CS_STATUS, CS_CREATE_TIME, CS_CREATOR, CS_OPERATE_TIME, CS_OPERATOR
+    from CMS_SCENE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, CS_TERMINAL, CS_MODULE, CS_HEIGHT, CS_WIDTH, CS_IDENTIFICATION, CS_NAME, 
+    CS_STATUS, CS_CREATE_TIME, CS_CREATOR, CS_OPERATE_TIME, CS_OPERATOR
+    from CMS_SCENE
+  </select>
+</mapper>
