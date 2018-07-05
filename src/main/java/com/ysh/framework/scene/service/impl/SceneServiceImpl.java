@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,5 +54,27 @@ public class SceneServiceImpl implements ISceneService {
     @Override
     public List<Scene> getList() throws Exception {
         return sceneMapper.selectAll();
+    }
+
+    /**
+     * 批量保存
+     *
+     * @param list 对象集合
+     * @throws Exception 异常
+     */
+    @Override
+    public void batchSave(List<Scene> list) throws Exception {
+        List<Scene> scenes = new ArrayList<>();
+        for (Scene scene : list) {
+            scenes.add(scene);
+            if (scenes.size() == 100) {
+                sceneMapper.batchInsert(scenes);
+                scenes.clear();
+            }
+        }
+
+        if (!scenes.isEmpty()) {
+            sceneMapper.batchInsert(scenes);
+        }
     }
 }

@@ -31,4 +31,12 @@ public interface ISceneService {
      * @throws Exception
      */
     List<Scene> getList() throws Exception;
+
+    /**
+     * 批量保存
+     *
+     * @param list 对象集合
+     * @throws Exception 异常
+     */
+    void batchSave(List<Scene> list) throws Exception;
 }

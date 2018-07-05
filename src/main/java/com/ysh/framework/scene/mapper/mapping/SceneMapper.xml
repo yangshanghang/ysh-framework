@@ -57,4 +57,16 @@
     CS_STATUS, CS_CREATE_TIME, CS_CREATOR, CS_OPERATE_TIME, CS_OPERATOR
     from CMS_SCENE
   </select>
+
+  <!--批量保存-->
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO CMS_SCENE (ID, CS_TERMINAL, CS_MODULE, CS_HEIGHT, CS_WIDTH, CS_IDENTIFICATION, CS_NAME,
+    CS_STATUS, CS_CREATE_TIME, CS_CREATOR, CS_OPERATE_TIME, CS_OPERATOR)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (replace(uuid(), '-', ''), #{item.terminal}, #{item.module},#{item.height}, #{item.width},
+      #{item.identification},#{item.name,jdbcType=VARCHAR}, #{item.status}, #{item.createTime},
+      #{item.creator}, #{item.operateTime}, #{item.operator})
+    </foreach>
+  </insert>
 </mapper>
