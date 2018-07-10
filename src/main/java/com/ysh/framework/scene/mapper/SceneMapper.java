@@ -22,4 +22,13 @@ public interface SceneMapper {
      * @throws Exception 异常
      */
     void batchInsert(List<Scene> list) throws Exception;
+
+    /**
+     * 获取满足条件的对象数量
+     *
+     * @param scene 对象
+     * @return 对象数量
+     * @throws Exception 异常
+     */
+    int selectCount(Scene scene) throws Exception;
 }

@@ -65,8 +65,30 @@
     VALUES
     <foreach collection="list" item="item" index="index" separator=",">
       (replace(uuid(), '-', ''), #{item.terminal}, #{item.module},#{item.height}, #{item.width},
-      #{item.identification},#{item.name,jdbcType=VARCHAR}, #{item.status}, #{item.createTime},
+      #{item.identification},#{item.name}, #{item.status}, #{item.createTime},
       #{item.creator}, #{item.operateTime}, #{item.operator})
     </foreach>
   </insert>
+
+  <!--获取满足条件的对象数量-->
+  <select id="selectCount" parameterType="com.ysh.framework.scene.model.Scene" resultMap="BaseResultMap">
+    SELECT COUNT(*) FROM CMS_SCENE
+    <where>
+      <if test="terminal != null and terminal != ''">
+        CS_TERMINAL=#{terminal}
+      </if>
+      <if test="module != null and module != ''">
+        CS_MODULE=#{module}
+      </if>
+      <if test="identification != null and identification != ''">
+        CS_IDENTIFICATION=#{identification}
+      </if>
+      <if test="name != null and name != ''">
+        CS_NAME=#{name}
+      </if>
+      <if test="status != null and status != ''">
+        CS_STATUS=#{status}
+      </if>
+    </where>
+  </select>
 </mapper>

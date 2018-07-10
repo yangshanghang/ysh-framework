@@ -39,4 +39,13 @@ public interface ISceneService {
      * @throws Exception 异常
      */
     void batchSave(List<Scene> list) throws Exception;
+
+    /**
+     * 获取满足条件的对象数量
+     *
+     * @param scene 对象
+     * @return 对象数量
+     * @throws Exception 异常
+     */
+    int getCount(Scene scene) throws Exception;
 }
